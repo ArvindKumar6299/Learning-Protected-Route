@@ -3,8 +3,9 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectR = ()=>{
     try {
-        const isAuthenticated = !!localStorage.getItem("token");
-        return  isAuthenticated ==="true"? <Outlet/>:<Navigate to="/login"/>;
+        const token = localStorage.getItem("token");
+        const isAuthenticated = !!token;  //Check if token exists
+        return  isAuthenticated ? <Outlet/> : <Navigate to="/login"/>;
     } catch (error) {
         console.error("Error accessing localStorage: ", error);
         return <Navigate to="/login" />;

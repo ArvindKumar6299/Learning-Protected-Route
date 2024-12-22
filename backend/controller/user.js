@@ -16,10 +16,11 @@ const SignUp = async(req,res) =>{
     console.log("User Document: ", user);  // log user object
     await user.save();     //saving user inside database
     
-    res.status(201).json({message:"user registered  successfully",success:true});
+    res.status(201).json({message:"user registered  successfully" , success:true});
    } catch (error) {
-      res.status(400).json({message: 'error in register user'},error);
-      console.log("signup err");
+       console.log("signup err");
+      res.status(500).json({message: 'error in register user' , error});
+   
    }
 }
 
@@ -51,7 +52,7 @@ const login = async(req,res)=>{
             httpOnly: false,
             secure: false,
          });
-         res.status(200).json({message:"user logged in successfully",success:true});
+         res.status(200).json({message:"user logged in successfully",success:true, token});
         // return res.status(201).json({message:"user logged in successfully", success:true});
        
     } catch (error) {

@@ -35,13 +35,15 @@ const Login = ()=>{
                 "Content-Type": "application/json",
             },withCredentials: true});
             console.log(data);
-            const {success, message} = data;
+            const {success, message, token} = data;  //extract data from response
             if(success){
                 handleSuccess(message);
+                // Save the token to local storage
+                window.localStorage.setItem("token", token);
                 setTimeout(()=>{
-                    navigate("/test");
+                    navigate("/");
                 },1000);
-                window.localStorage.setItem("token",token);
+            
             }else{
                 handleError(message);
             }

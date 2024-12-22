@@ -6,33 +6,52 @@ const cookieParser = require("cookie-parser");
 const userVerification = require("./middleware/authMiddleware");
 
 const app = express();
-const URI = "mongodb+srv://arvind6299697165:OrxeJvOYeGspJHHM@cluster0.xskaj.mongodb.net/";
 
-// arvind6299697165   OrxeJvOYeGspJHHM
-// const routes = express.Router();
- function dbConnect(){
+
+const URI = "mongodb://127.0.0.1:27017/blogsite";
+
+ const dbConnect = async ()=>{
   try {
-     mongoose.connect(URI );
+    await mongoose.connect(URI, {
+      // useNewUrlParser: true, // Ensures the new URL parser is used
+      // useUnifiedTopology: true, // Use the new topology engine
+    });
     console.log("database connection established")
   } catch (error) {
     console.log("Unsuccessful database connection",error);
   }
 }
+// const routes = express.Router();
+// async function dbConnect(){
+//   try {
+//     await mongoose.connect(URI );
+//     console.log("database connection established")
+//   } catch (error) {
+//     console.log("Unsuccessful database connection",error);
+//   }
+// }
 dbConnect();
+
+app.use((req, res, next) => {
+  console.log('Request Origin:', req.headers.origin);
+  next();
+});
 
 app.use(express.json());
 app.use(cookieParser());
 
+
+
+
 app.use(cors({
-    origin: 'http://localhost:5173',
-    // methods: ["GET","POST","PUT", "DELETE"],
+    origin: ' http://localhost:5173',
+    methods: ["GET","POST","PUT", "DELETE"],
     credentials: true,
 })); //CORS middleware is being used to handle cross-origin requests, allowing the server to specify which domains are allowed to access resources. In this case, you're setting up CORS to allow requests from http://localhost:5716 ,
 //credentials: true option indicates that cookies or authorization headers can be included with the requests.
 
 
 app.use("/auth",router);  // public route
-
 
 app.use(userVerification);
 
